@@ -10,8 +10,8 @@ import 'rc-datetime-picker/dist/picker.css';
 import 'font-awesome/css/font-awesome.min.css';
 
 class SearchBar extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       smoment: moment().startOf('month'),
       emoment: moment().endOf('month')
@@ -45,7 +45,7 @@ class SearchBar extends Component {
     return (
       <Container>
         <Row style={{
-          paddingTop: 20, paddingBottom: 20, marginBottom: 20, backgroundColor: '#a5c7f6'
+          paddingTop: 20, paddingBottom: 20, marginBottom: 20, backgroundColor: '#eeeeff'
         }}
         >
           <Col md="auto">
@@ -60,7 +60,7 @@ class SearchBar extends Component {
             </DatetimePickerTrigger>
           </Col>
           <Col md="auto">
-            <Button outline color="secondary" onClick={this.onFilter}>Filter</Button>
+            <Button onClick={this.onFilter}>Filter</Button>
           </Col>
         </Row>
       </Container>
