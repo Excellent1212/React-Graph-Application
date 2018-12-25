@@ -29,7 +29,7 @@ class Graph extends Component {
     const { filteredGraphData } = this.props;
     if (typeof filteredGraphData == 'undefined') return {};
     const ret = [];
-    const colors = ['#ff9896', '#1f77b4', '#98df8a', '#ffbb78'];
+    const colors = ['#ff533d', '#52004b', '#80ff00', '#ffd43d'];
 
     Object.keys(filteredGraphData).forEach((target, i) => {
       const data = filteredGraphData[target];
@@ -57,7 +57,7 @@ class Graph extends Component {
     const datum = this.formatData();
     const StyledGrid = styled(Grid)`
       padding: 20px;
-      background-color: #eeeeee;
+      background-color: #efb1a0;
     `;
     const { type } = this.props;
     return (
