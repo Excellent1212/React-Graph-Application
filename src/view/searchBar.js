@@ -25,17 +25,13 @@ class SearchBar extends Component {
       minDate: startOfMonth(new Date()),
       maxDate: endOfMonth(new Date()),
       selectedOption: options[0],
-      selectedTargets: [],
-      isFirst: true
+      selectedTargets: []
     };
   }
 
-  componentWillReceiveProps(props) {
-    const { dispTargets } = props;
-    const { isFirst } = this.state;
-    if (dispTargets.length > 0 && isFirst) {
-      this.setState({ isFirst: false }, () => this.targetsChanged(dispTargets));
-    }
+  componentDidMount() {
+    const { allTargets } = this.props;
+    this.targetsChanged(allTargets);
   }
 
   handleStartChange = (mmt) => {
@@ -47,10 +43,10 @@ class SearchBar extends Component {
   }
 
   targetsChanged = (newTargets) => {
-    const { dispTargets } = this.props;
+    const { allTargets } = this.props;
     if (newTargets.length === 0) {
       // eslint-disable-next-line no-param-reassign
-      newTargets = dispTargets;
+      newTargets = allTargets;
     }
     const { setTargets } = this.props;
     this.setState({
@@ -78,13 +74,13 @@ class SearchBar extends Component {
       minDate, maxDate, selectedOption, selectedTargets
     } = this.state;
 
-    const { dispTargets } = this.props;
+    const { allTargets } = this.props;
 
     return (
       <Grid>
         <Row>
           <Col md={3} xs={10}>
-            {'Chart type:'}
+            <p>Chart type:</p>
             <Select
               value={selectedOption}
               options={options}
@@ -92,7 +88,7 @@ class SearchBar extends Component {
             />
           </Col>
           <Col md={2} xs={5}>
-            {'Start date:'}
+            <p>Start date:</p>
             <DatePicker
               id="start_datepicker"
               value={format(minDate, 'YYYY-MM-DD HH:mm')}
@@ -101,7 +97,7 @@ class SearchBar extends Component {
             />
           </Col>
           <Col md={2} md-offset={1} xs={5}>
-            {'End date:'}
+            <p>End date:</p>
             <DatePicker
               id="end_datepicker"
               value={format(maxDate, 'YYYY-MM-DD HH:mm')}
@@ -119,7 +115,7 @@ class SearchBar extends Component {
               value={selectedTargets}
               onChange={this.targetsChanged}
             >
-              {dispTargets.map((key, i) => (
+              {allTargets.map((key, i) => (
                 <StyledCheckLabel key={i}>
                   <Checkbox value={key} key={i} />
                       &nbsp;

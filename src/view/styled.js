@@ -18,13 +18,12 @@ const StyledDivContent = styled.div`
 `;
 
 const StyledCheckLabel = styled.label`
-  margin-left: 20px;
+  margin-right: 20px;
 `;
 const StyledCheckGroup = styled(CheckboxGroup)`
   display: flex;
   align-items: center;
   padding: 10px 20px 5px 5px;
-  border-style: ridge;
 `;
 
 export {

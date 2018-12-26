@@ -16,16 +16,12 @@ class View extends Component {
       maxDate: format(endOfMonth(new Date()), 'YYYY-MM-DD HH:mm'),
       type: GRAPH_TYPE_LINE_CHART,
       targets: [],
-      dispTargets: []
+      allTargets: ['target1', 'target2', 'target3']
     };
   }
 
   onFilter = (minDate, maxDate) => {
     this.setState({ minDate, maxDate });
-  };
-
-  getTargets = (dispTargets) => {
-    this.setState({ dispTargets });
   };
 
   setTargets = (targets) => {
@@ -38,7 +34,7 @@ class View extends Component {
 
   render() {
     const {
-      minDate, maxDate, type, targets, dispTargets
+      minDate, maxDate, type, targets, allTargets
     } = this.state;
     return (
       <div>
@@ -47,7 +43,7 @@ class View extends Component {
             onFilter={this.onFilter}
             onTypeChange={this.onTypeChange}
             setTargets={this.setTargets}
-            dispTargets={dispTargets}
+            allTargets={allTargets}
           />
         </StyledDivNav>
         <StyledDivContent>
@@ -57,7 +53,6 @@ class View extends Component {
             minDate={minDate}
             maxDate={maxDate}
             targets={targets}
-            getTargets={this.getTargets}
             height={400}
           />
         </StyledDivContent>
