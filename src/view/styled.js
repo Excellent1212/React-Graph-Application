@@ -9,7 +9,6 @@ const StyledRow = styled(Row)`
 const StyledDivNav = styled.div`
     padding: 20px;
     background-color: #eeeeff;
-    margin-top: 10px;
   `;
 const StyledDivContent = styled.div`
   padding: 20px;
