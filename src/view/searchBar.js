@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {
-  Grid, Row, Col
+  Grid, Row, Col,
 } from 'react-bootstrap';
 import Select from 'react-select';
 import { Checkbox } from 'react-checkbox-group';
@@ -15,17 +15,18 @@ const format = require('date-fns/format');
 
 const options = [
   { value: GRAPH_TYPE_LINE_CHART, label: 'Line Chart' },
-  { value: GRAPH_TYPE_BAR_CHART, label: 'Bar Chart' }
+  { value: GRAPH_TYPE_BAR_CHART, label: 'Bar Chart' },
 ];
 
 class SearchBar extends Component {
   constructor(props) {
     super(props);
+
     this.state = {
       minDate: startOfMonth(new Date()),
       maxDate: endOfMonth(new Date()),
       selectedOption: options[0],
-      selectedTargets: []
+      selectedTargets: [],
     };
   }
 
@@ -43,12 +44,12 @@ class SearchBar extends Component {
   }
 
   targetsChanged = (newTargets) => {
-    const { allTargets } = this.props;
+    const { allTargets, setTargets } = this.props;
     if (newTargets.length === 0) {
       // eslint-disable-next-line no-param-reassign
       newTargets = allTargets;
     }
-    const { setTargets } = this.props;
+
     this.setState({
       selectedTargets: newTargets
     }, () => setTargets(newTargets));
@@ -56,24 +57,23 @@ class SearchBar extends Component {
 
   onFilter = () => {
     const { minDate, maxDate } = this.state;
+    const { onFilter } = this.props;
     if (minDate > maxDate) {
       alert('Start date must be less than end date.');
     } else {
-      const { onFilter } = this.props;
       onFilter(format(minDate, 'YYYY-MM-DD'), format(maxDate, 'YYYY-MM-DD'));
     }
   }
 
-  handleTypeChange =(type) => {
+  handleTypeChange = (type) => {
     const { onTypeChange } = this.props;
     this.setState({ selectedOption: type }, () => onTypeChange(type.value));
   }
 
   render() {
     const {
-      minDate, maxDate, selectedOption, selectedTargets
+      minDate, maxDate, selectedOption, selectedTargets,
     } = this.state;
-
     const { allTargets } = this.props;
 
     return (
@@ -108,19 +108,20 @@ class SearchBar extends Component {
         </Row>
         <StyledRow>
           <Col md={12}>
-            {'Target type:'}
+            <p>Target type:</p>
             <StyledCheckGroup
               checkboxDepth={2}
               name="targets"
               value={selectedTargets}
               onChange={this.targetsChanged}
             >
-              {allTargets.map((key, i) => (
+              { allTargets.map((key, i) => (
                 <StyledCheckLabel key={i}>
                   <Checkbox value={key} key={i} />
-                      &nbsp;
+                  &nbsp;
                   {key}
-                </StyledCheckLabel>))}
+                </StyledCheckLabel>
+              ))}
             </StyledCheckGroup>
           </Col>
         </StyledRow>
@@ -128,4 +129,5 @@ class SearchBar extends Component {
     );
   }
 }
+
 export default SearchBar;

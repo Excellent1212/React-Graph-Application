@@ -6,6 +6,7 @@ import { GRAPH_TYPE_LINE_CHART, GRAPH_TYPE_BAR_CHART } from './constants';
 
 const Chart = ({ type, datum, height }) => {
   const chart_id = 'custom_chart_' + Math.random().toString(36).substr(2, 9);
+
   nv.addGraph(() => {
     let chart = {};
     if (type === GRAPH_TYPE_BAR_CHART) {
@@ -32,6 +33,7 @@ const Chart = ({ type, datum, height }) => {
     d3.select('#' + chart_id + ' > svg')
       .datum(datum)
       .call(chart);
+
     nv.utils.windowResize(chart.update);
 
     return chart;
@@ -43,4 +45,5 @@ const Chart = ({ type, datum, height }) => {
     </div>
   );
 };
+
 export default Chart;

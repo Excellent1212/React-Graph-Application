@@ -10,7 +10,6 @@ const apiRequest = (method, url, options = {}) => {
   return axios(config);
 };
 
-const getGraphData = param => apiRequest('get', param.apiUrl);
-
+const getGraphData = (url, params = {}) => apiRequest('get', url, params);
 
 export default getGraphData;

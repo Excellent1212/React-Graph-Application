@@ -3,14 +3,15 @@ import { Row } from 'react-bootstrap';
 import { CheckboxGroup } from 'react-checkbox-group';
 
 const StyledRow = styled(Row)`
-    margin-top: 20px;
-    float: left;
-  `;
+  margin-top: 20px;
+  float: left;
+`;
+
 const StyledDivNav = styled.div`
-    padding: 20px;
-    background-color: #eeeeff;
-    
-  `;
+  padding: 20px;
+  background-color: #eeeeff;
+`;
+
 const StyledDivContent = styled.div`
   padding: 20px;
 `;
@@ -18,6 +19,7 @@ const StyledDivContent = styled.div`
 const StyledCheckLabel = styled.label`
   margin-right: 20px;
 `;
+
 const StyledCheckGroup = styled(CheckboxGroup)`
   display: flex;
   align-items: center;
@@ -25,5 +27,5 @@ const StyledCheckGroup = styled(CheckboxGroup)`
 `;
 
 export {
-  StyledRow, StyledDivNav, StyledDivContent, StyledCheckGroup, StyledCheckLabel
+  StyledRow, StyledDivNav, StyledDivContent, StyledCheckGroup, StyledCheckLabel,
 };

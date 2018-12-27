@@ -11,12 +11,13 @@ const format = require('date-fns/format');
 class View extends Component {
   constructor(props) {
     super(props);
+
     this.state = {
       minDate: format(startOfMonth(new Date()), 'YYYY-MM-DD HH:mm'),
       maxDate: format(endOfMonth(new Date()), 'YYYY-MM-DD HH:mm'),
       type: GRAPH_TYPE_LINE_CHART,
       targets: [],
-      allTargets: ['target1', 'target2', 'target3']
+      allTargets: ['target1', 'target2', 'target3'],
     };
   }
 
@@ -34,8 +35,9 @@ class View extends Component {
 
   render() {
     const {
-      minDate, maxDate, type, targets, allTargets
+      minDate, maxDate, type, targets, allTargets,
     } = this.state;
+
     return (
       <div>
         <StyledDivNav>
