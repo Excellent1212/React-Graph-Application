@@ -10,8 +10,8 @@ if (process.env.NODE_ENV === 'development') {
 }
 
 ReactDOM.render(
-    <DefaultErrorBoundary>
-      <App />
-    </DefaultErrorBoundary>,
+  <DefaultErrorBoundary>
+    <App />
+  </DefaultErrorBoundary>,
   document.getElementById('app')
 )

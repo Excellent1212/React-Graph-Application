@@ -1,89 +1,95 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import Chart from './Chart';
-import getFilteredGraphData from '../selectors';
-import getGraphData from '../api';
-import { StyledDivGraph } from '../styled';
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
+import Chart from './Chart'
+import getFilteredGraphData from '../selectors'
+import getGraphData from '../api'
+import { StyledDivGraph } from '../styled'
 
 class Graph extends Component {
   constructor(props) {
-    super(props);
+    super(props)
 
     this.state = {
       loading: false,
       graphData: {},
-      error: '',
-    };
+      error: ''
+    }
   }
 
   componentDidMount() {
-    this.getData();
+    this.getData()
   }
 
   getData() {
-    const { apiUrl } = this.props;
-    this.setState(
-      { loading: true },
-      () => getGraphData(apiUrl)
-        .then((response) => {
-          const graphData = response.data;
-          this.setState({ graphData, loading: false });
+    const { apiUrl } = this.props
+    this.setState({ loading: true }, () =>
+      getGraphData(apiUrl)
+        .then(response => {
+          const graphData = response.data
+          this.setState({ graphData, loading: false })
         })
-        .catch((error) => {
-          this.setState({ graphData: {}, loading: false, error: error.toString() });
+        .catch(error => {
+          this.setState({
+            graphData: {},
+            loading: false,
+            error: error.toString()
+          })
         })
-    );
+    )
   }
 
-  formatData = (targets) => {
-    const { graphData } = this.state;
+  formatData = targets => {
+    const { graphData } = this.state
     if (graphData.length === 0) {
-      return {};
+      return {}
     }
-    const filteredGraphData = getFilteredGraphData(this.state, this.props, targets);
+    const filteredGraphData = getFilteredGraphData(
+      this.state,
+      this.props,
+      targets
+    )
     if (typeof filteredGraphData == 'undefined') {
-      return {};
+      return {}
     }
-    const result = [];
+    const result = []
 
-    Object.keys(filteredGraphData).forEach((target) => {
-      const data = filteredGraphData[target];
+    Object.keys(filteredGraphData).forEach(target => {
+      const data = filteredGraphData[target]
       if (data.length > 0) {
-        const values = [];
+        const values = []
         for (const c in data) {
           if (c) {
             values.push({
               x: data[c][0],
-              y: data[c][1],
-            });
+              y: data[c][1]
+            })
           }
         }
         result.push({
           key: target,
-          values,
-        });
+          values
+        })
       }
-    });
-    return result;
+    })
+    return result
   }
 
   render() {
-    const { targets, height, type } = this.props;
-    const { loading, error } = this.state;
-    const datum = this.formatData(targets);
+    const { targets, height, type } = this.props
+    const { loading, error } = this.state
+    const datum = this.formatData(targets)
 
-    const StyledDivGraphNew = { ...StyledDivGraph };
+    const StyledDivGraphNew = { ...StyledDivGraph }
 
-    return (
-      loading
-        ? <div>Loading...</div>
-        : error ? <div>{error}</div>
-          : (
-            <StyledDivGraphNew>
-              <Chart type={type} datum={datum} height={height} />
-            </StyledDivGraphNew>
-          )
-    );
+    return loading ? (
+      <div>Loading...</div>
+    ) : error ? (
+      <div>{error}</div>
+    ) : (
+      <StyledDivGraphNew>
+        <Chart type={type} datum={datum} height={height} />
+      </StyledDivGraphNew>
+    )
   }
 }
 
@@ -94,4 +100,4 @@ Graph.propTypes = {
   type: PropTypes.number
 }
 
-export default Graph;
+export default Graph
