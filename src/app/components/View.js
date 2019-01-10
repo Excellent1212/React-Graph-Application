@@ -1,42 +1,40 @@
-import React, { Component } from 'react';
-import Graph from '../graph';
-import SearchBar from './searchBar';
-import { GRAPH_TYPE_LINE_CHART } from '../graph/constants';
-import { StyledDivNav, StyledDivContent } from './styled';
+import React, { Component } from 'react'
+import Graph from '../../graph/components/Graph'
+import SearchBar from '../../search-bar/components/SearchBar'
+import { GRAPH_TYPE_LINE_CHART } from '../../graph/constants'
+import { StyledDivNav, StyledDivContent } from '../styled'
 
-const startOfMonth = require('date-fns/start_of_month');
-const endOfMonth = require('date-fns/end_of_month');
-const format = require('date-fns/format');
+const startOfMonth = require('date-fns/start_of_month')
+const endOfMonth = require('date-fns/end_of_month')
+const format = require('date-fns/format')
 
 class View extends Component {
   constructor(props) {
-    super(props);
+    super(props)
 
     this.state = {
       minDate: format(startOfMonth(new Date()), 'YYYY-MM-DD HH:mm'),
       maxDate: format(endOfMonth(new Date()), 'YYYY-MM-DD HH:mm'),
       type: GRAPH_TYPE_LINE_CHART,
       targets: [],
-      allTargets: ['target1', 'target2', 'target3'],
-    };
+      allTargets: ['target1', 'target2', 'target3']
+    }
   }
 
   onFilter = (minDate, maxDate) => {
-    this.setState({ minDate, maxDate });
-  };
+    this.setState({ minDate, maxDate })
+  }
 
-  setTargets = (targets) => {
-    this.setState({ targets });
-  };
+  setTargets = targets => {
+    this.setState({ targets })
+  }
 
-  onTypeChange = (type) => {
-    this.setState({ type });
-  };
+  onTypeChange = type => {
+    this.setState({ type })
+  }
 
   render() {
-    const {
-      minDate, maxDate, type, targets, allTargets,
-    } = this.state;
+    const { minDate, maxDate, type, targets, allTargets } = this.state
 
     return (
       <div>
@@ -59,9 +57,8 @@ class View extends Component {
           />
         </StyledDivContent>
       </div>
-
-    );
+    )
   }
 }
 
-export default View;
+export default View
