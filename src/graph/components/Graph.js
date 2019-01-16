@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import Chart from './Chart'
-import getFilteredGraphData from '../selectors'
+import getFormatedGraphData from '../selectors'
 import getGraphData from '../api'
 import { StyledDivGraph } from '../styled'
 
@@ -10,6 +10,7 @@ class Graph extends Component {
     super(props)
 
     this.state = {
+      apiUrl: '',
       loading: false,
       graphData: {},
       error: ''
@@ -20,10 +21,23 @@ class Graph extends Component {
     this.getData()
   }
 
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.apiUrl !== this.state.apiUrl) {
+      this.getData()
+    }
+  }
+
+  static getDerivedStateFromProps(nextProps, prevState) {
+    if (nextProps.apiUrl !== prevState.apiUrl) {
+      return { apiUrl: nextProps.apiUrl }
+    } else return null
+  }
+
   getData() {
-    const { apiUrl } = this.props
+    const { apiUrl } = this.state
+    const { auth } = this.props
     this.setState({ loading: true }, () =>
-      getGraphData(apiUrl)
+      getGraphData(apiUrl, auth)
         .then(response => {
           const graphData = response.data
           this.setState({ graphData, loading: false })
@@ -38,46 +52,19 @@ class Graph extends Component {
     )
   }
 
-  formatData = targets => {
+  formatData = () => {
     const { graphData } = this.state
+
     if (graphData.length === 0) {
       return {}
     }
-    const filteredGraphData = getFilteredGraphData(
-      this.state,
-      this.props,
-      targets
-    )
-    if (typeof filteredGraphData == 'undefined') {
-      return {}
-    }
-    const result = []
-
-    Object.keys(filteredGraphData).forEach(target => {
-      const data = filteredGraphData[target]
-      if (data.length > 0) {
-        const values = []
-        for (const c in data) {
-          if (c) {
-            values.push({
-              x: data[c][0],
-              y: data[c][1]
-            })
-          }
-        }
-        result.push({
-          key: target,
-          values
-        })
-      }
-    })
-    return result
+    return getFormatedGraphData(this.state)
   }
 
   render() {
-    const { targets, height, type } = this.props
+    const { height, type } = this.props
     const { loading, error } = this.state
-    const datum = this.formatData(targets)
+    const datum = this.formatData()
 
     const StyledDivGraphNew = { ...StyledDivGraph }
 
@@ -95,7 +82,7 @@ class Graph extends Component {
 
 Graph.propTypes = {
   apiUrl: PropTypes.string,
-  targets: PropTypes.array,
+  auth: PropTypes.object,
   height: PropTypes.number,
   type: PropTypes.number
 }

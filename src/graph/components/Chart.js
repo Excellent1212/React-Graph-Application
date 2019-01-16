@@ -18,13 +18,14 @@ const Chart = ({ type, datum, height }) => {
       chart = nv.models.multiBarChart()
       chart.reduceXTicks(true)
       chart.rotateLabels(0)
-      chart.showControls(true)
+      chart.showControls(false)
+      chart.showLegend(false)
       chart.groupSpacing(0.1)
     } else if (type === GRAPH_TYPE_LINE_CHART) {
       chart = nv.models.lineChart()
       chart.margin({ left: 100 })
       chart.useInteractiveGuideline(true)
-      chart.showLegend(true)
+      chart.showLegend(false)
       chart.showYAxis(true)
       chart.showXAxis(true)
     }

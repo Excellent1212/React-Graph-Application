@@ -2,20 +2,17 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { Grid, Row, Col } from 'react-bootstrap'
 import Select from 'react-select'
-import { Checkbox } from 'react-checkbox-group'
 import {
   GRAPH_TYPE_LINE_CHART,
   GRAPH_TYPE_BAR_CHART
 } from '../../graph/constants'
-import { StyledRow, StyledCheckLabel, StyledCheckGroup } from '../styled'
 
 const DatePicker = require('react-16-bootstrap-date-picker')
-
 const startOfMonth = require('date-fns/start_of_month')
 const endOfMonth = require('date-fns/end_of_month')
 const format = require('date-fns/format')
 
-const options = [
+const chartTypes = [
   { value: GRAPH_TYPE_LINE_CHART, label: 'Line Chart' },
   { value: GRAPH_TYPE_BAR_CHART, label: 'Bar Chart' }
 ]
@@ -27,14 +24,10 @@ class SearchBar extends Component {
     this.state = {
       minDate: startOfMonth(new Date()),
       maxDate: endOfMonth(new Date()),
-      selectedOption: options[0],
-      selectedTargets: []
+      selectedOption: chartTypes[0],
+      curTrunkId: props.trunk_id.choices[0],
+      curDirection: props.direction.choices[0]
     }
-  }
-
-  componentDidMount() {
-    const { allTargets } = this.props
-    this.targetsChanged(allTargets)
   }
 
   handleStartChange = minDate => {
@@ -43,21 +36,6 @@ class SearchBar extends Component {
 
   handleEndChange = maxDate => {
     this.setState({ maxDate }, () => this.onFilter())
-  }
-
-  targetsChanged = newTargets => {
-    const { allTargets, setTargets } = this.props
-    if (newTargets.length === 0) {
-      // eslint-disable-next-line no-param-reassign
-      newTargets = allTargets
-    }
-
-    this.setState(
-      {
-        selectedTargets: newTargets
-      },
-      () => setTargets(newTargets)
-    )
   }
 
   onFilter = () => {
@@ -75,9 +53,29 @@ class SearchBar extends Component {
     this.setState({ selectedOption: type }, () => onTypeChange(type.value))
   }
 
+  handleTrunkChange = trunk => {
+    const { onApiParamChange } = this.props
+    this.setState({ curTrunkId: trunk }, () =>
+      onApiParamChange({ curTrunkId: trunk.value })
+    )
+  }
+
+  handleDirectionChange = direction => {
+    const { onApiParamChange } = this.props
+    this.setState({ curDirection: direction }, () =>
+      onApiParamChange({ curDirection: direction.value })
+    )
+  }
+
   render() {
-    const { minDate, maxDate, selectedOption, selectedTargets } = this.state
-    const { allTargets } = this.props
+    const {
+      minDate,
+      maxDate,
+      selectedOption,
+      curTrunkId,
+      curDirection
+    } = this.state
+    const { trunk_id, direction } = this.props
 
     return (
       <Grid>
@@ -87,8 +85,26 @@ class SearchBar extends Component {
             <Select
               aria-label="Chart type"
               value={selectedOption}
-              options={options}
+              options={chartTypes}
               onChange={this.handleTypeChange}
+            />
+          </Col>
+          <Col md={2} xs={10}>
+            <p>{trunk_id.label}</p>
+            <Select
+              aria-label="Trunk type"
+              value={curTrunkId}
+              options={trunk_id.choices}
+              onChange={this.handleTrunkChange}
+            />
+          </Col>
+          <Col md={2} xs={10}>
+            <p>{direction.label}</p>
+            <Select
+              aria-label="Direction type"
+              value={curDirection}
+              options={direction.choices}
+              onChange={this.handleDirectionChange}
             />
           </Col>
           <Col md={2} xs={5}>
@@ -112,24 +128,6 @@ class SearchBar extends Component {
             />
           </Col>
         </Row>
-        <StyledRow>
-          <Col md={12}>
-            <p>Target type:</p>
-            <StyledCheckGroup
-              checkboxDepth={2}
-              value={selectedTargets}
-              onChange={this.targetsChanged}
-            >
-              {allTargets.map((key, i) => (
-                <StyledCheckLabel key={i}>
-                  <Checkbox value={key} key={i} />
-                  &nbsp;
-                  {key}
-                </StyledCheckLabel>
-              ))}
-            </StyledCheckGroup>
-          </Col>
-        </StyledRow>
       </Grid>
     )
   }
@@ -138,8 +136,9 @@ class SearchBar extends Component {
 SearchBar.propTypes = {
   onFilter: PropTypes.func,
   onTypeChange: PropTypes.func,
-  setTargets: PropTypes.func,
-  allTargets: PropTypes.array
+  onApiParamChange: PropTypes.func,
+  trunk_id: PropTypes.object,
+  direction: PropTypes.object
 }
 
 export default SearchBar
